@@ -1,0 +1,162 @@
+.hero {
+  --photo-w: 200px;
+  --photo-h: 266px;
+  --polaroid-pad: 10px;
+  --polaroid-caption: 40px;
+  --photo-img-h: calc(var(--photo-h) - var(--polaroid-pad) - var(--polaroid-caption));
+  --headline-size: clamp(3rem, 6vw, 5rem);
+  --name-overlap: 4.5rem;
+
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--color-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 4rem 2.5rem;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  width: 100%;
+}
+
+/* 3-column grid: [hello i'm + label] | [photo] | [isa. + bio + pills] */
+.heroLayout {
+  display: grid;
+  grid-template-columns: 1fr var(--photo-w) 1fr;
+  gap: 0 1rem;
+  align-items: start;
+}
+
+/* ---- left column ---- */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.helloIm {
+  font-family: "HamIsCute", serif;
+  font-size: var(--headline-size);
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  text-align: right;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  font-family: "PokemonClassic", monospace;
+  font-size: 0.6rem;
+  color: var(--color-golden-orange);
+  letter-spacing: 0.06em;
+  text-align: right;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.cursor {
+  animation: blink 0.85s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ---- center: flip card ---- */
+.photoCard {
+  cursor: pointer;
+  width: var(--photo-w);
+  height: var(--photo-h);
+  perspective: 1000px;
+  position: relative;
+  z-index: 1;  /* text columns (z-index: 2) sit on top */
+}
+
+.photoInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.photoCard:hover .photoInner {
+  transform: rotateY(180deg);
+}
+
+.photoFront,
+.photoBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: white;
+  padding: var(--polaroid-pad);
+  padding-bottom: var(--polaroid-caption);
+  box-shadow: 2px 6px 22px rgba(74, 55, 40, 0.14);
+}
+
+.photoBack {
+  transform: rotateY(180deg);
+}
+
+/* placeholder — swap for <Image fill> inside this div when adding real photos */
+.photoImg {
+  position: relative;
+  width: 100%;
+  height: var(--photo-img-h);
+  background-color: var(--color-peach);
+  overflow: hidden;
+}
+
+.photoImgBack {
+  background-color: var(--color-sky-blue);
+}
+
+/* ---- right column ---- */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0.5rem;
+  position: relative;
+  z-index: 2;  /* on top of photo */
+}
+
+/*
+ * "isa." overlaps into the photo from the right.
+ * position: relative + left avoids conflicting with framer-motion's transform.
+ * Adjust --name-overlap in .hero to control how much overlaps.
+ */
+.nameWord {
+  font-family: "HamIsCute", serif;
+  font-size: var(--headline-size);
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  position: relative;
+  left: calc(-1 * var(--name-overlap));
+  margin-bottom: 0.75rem;
+}
+
+.bio {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  max-width: 240px;
+  margin-bottom: 1rem;
+}
+
+.contactRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
