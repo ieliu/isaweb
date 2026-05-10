@@ -7,7 +7,7 @@ import PillTag from "@/app/components/ui/PillTag";
 import { fadeUp, scaleIn, staggerContainer } from "@/app/lib/animations";
 import styles from "./Hero.module.css";
 import Image from "next/image";
-import irl_me from "@/app/photos/irl_me.jpeg"
+import irl_me from "@/public/irl_me_compressed.jpeg";
 
 const TYPING_MS  = 80;
 const ERASING_MS = 45;
