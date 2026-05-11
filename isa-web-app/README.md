@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# isa's portfolio
 
-## Getting Started
+Personal portfolio site for Isabelle (isa). Next.js 16 (app router), TypeScript, Tailwind CSS (layout only), Framer Motion, deployed on Vercel at isaweb-delta.vercel.app.
 
-First, run the development server:
+**Always read `CLAUDE.md` before touching anything** — it has the full design system, font rules, color tokens, CSS conventions, and component structure.
+
+---
+
+## running locally
 
 ```bash
+cd isa-web-app
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Runs on http://localhost:3000 (or 3001 if 3000 is taken).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## current state (end of session 1)
 
-## Learn More
+### ✅ done: hero section
 
-To learn more about Next.js, take a look at the following resources:
+Everything in `app/components/hero/` is complete and working.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Layout** — 3-column CSS grid: `[hello, i'm + label] | [photo card] | [isa. + bio + pills]`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `hello, i'm` is right-aligned in the left col, near the top of the photo
+- `isa.` overlaps into the photo from the right via `position: relative; left: calc(-1 * var(--name-overlap))` — tweak `--name-overlap` in `Hero.module.css` to control how much it overlaps
+- text columns are `z-index: 2`, photo card is `z-index: 1` so text sits on top of the photo
 
-## Deploy on Vercel
+**Photo card** — polaroid-style flip card (CSS 3D `rotateY` on hover)
+- Front: real photo — `app/photos/irl_me.jpeg` imported as a static asset, rendered with `<Image fill>`
+- Back: sky-blue placeholder — swap in cartoon image the same way when ready
+- The `<Image fill>` must go inside the `.photoImg` wrapper div (not directly in `.photoFront`) so it clips within the polaroid frame
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Pixel label** — PokemonClassic font, golden orange, cycles through roles with a typewriter animation (`useTypewriter` hook in `Hero.tsx`). The "cookie creator/destroyer" entry uses a mid-correction sequence (types "cookie creator", hesitates, backtracks to "cookie", then types "cookie destroyer"). To add more mid-corrections, add intermediate checkpoints to the `ROLES` array.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Shared UI built this session:**
+- `app/components/ui/Doodle.tsx` — static SVG decorative elements (star, flower, dot, sparkle), absolutely positioned, used throughout the hero
+- `app/components/ui/PillTag.tsx` — pastel pill/tag, accepts `color` as a CSS variable string, `href` + `external` for links
+- `app/lib/animations.ts` — all Framer Motion variants (`fadeUp`, `fadeIn`, `scaleIn`, `staggerContainer`)
+
+**Known/intentional:**
+- `app/globals.css` font-face URL for PokemonClassic was fixed from `Pokemon-Classic.ttf` → `Pokemon Classic.ttf` (matches the actual filename with a space)
+- framer-motion is installed (`npm install framer-motion` was run this session)
+
+---
+
+## up next: timeline section
+
+Build `app/components/timeline/` — see `CLAUDE.md` for the spec:
+- Blush background (`var(--color-blush)`)
+- Combined experience + projects on a single vertical timeline
+- Entries: Georgia Tech MSCS, Mastercard, Miss Chat, other personal projects
+- Each entry: date, title, description, tags (as PillTags)
+- Reuse `PillTag` from `app/components/ui/PillTag.tsx`
+- Entrance animations using variants from `app/lib/animations.ts`
+- Import and render `<Timeline />` in `app/page.tsx` below `<Hero />`
+
+---
+
+## file map
+
+```
+app/
+├── globals.css              # font-face declarations + CSS variable tokens only
+├── layout.tsx               # DM Sans loaded via next/font, applied as --font-dm-sans
+├── page.tsx                 # renders <Hero /> (add <Timeline /> here next)
+├── fonts/
+│   ├── HamIsCute-Regular.ttf
+│   └── Pokemon Classic.ttf
+├── photos/
+│   └── irl_me.jpeg          # hero photo (front of flip card)
+├── lib/
+│   └── animations.ts        # all framer motion variants
+└── components/
+    ├── ui/
+    │   ├── Doodle.tsx / .module.css
+    │   └── PillTag.tsx / .module.css
+    └── hero/
+        ├── Hero.tsx          # "use client" — typewriter hook lives here
+        └── Hero.module.css   # CSS vars: --photo-w, --photo-h, --name-overlap, --headline-size
+```

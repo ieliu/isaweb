@@ -80,25 +80,39 @@ three fonts, three roles — never swap them:
 - scattered svg doodles (stars, flowers, dots)
 - framer motion entrance animations
 
-### timeline (app/components/timeline/)
-- blush background
-- combined experience + projects, unified vertical timeline
-- entries: georgia tech, mastercard, miss chat, other personal projects
-- each entry has: date, title, description, tags
+### timeline (app/components/timeline/) — COMPLETE
+- blush background (`--color-blush`)
+- vertical flower stem (`--color-olive-pop`) that draws itself via scroll-linked `scaleY`
+- large hot-pink flower bloom at top; small flower nodes per entry in alternating pastel colors
+- flower nodes scale up (bouncy spring) as each entry reaches viewport center
+- cards alternate left/right, slide in from their side on scroll
+- hover: 3D tilt (mouse tracking) + lift effect (`y: -10, scale: 1.04`), grab cursor
+- click card → expands to centered modal (spring animation, blurred backdrop)
+- click anywhere on expanded modal → flips card (CSS 3D rotateY) to show `details` back face
+- click outside modal → closes; at most one card open at a time (state in `Timeline`)
+- 4 entries in `ENTRIES` array: each has `title`, `date`, `blurb`, `details`, `tags[]`, optional `photos[]`
 
-### playground preview (app/components/playground-preview/)
-- soft yellow background
-- teaser only — 2-3 hint cards suggesting what's inside
-- CTA button linking to /playground
-- does NOT contain real playground logic
+### playground preview (app/components/playground-preview/) — COMPLETE
+- soft yellow background (`--color-soft-yellow`), `min-height: 100vh`
+- section header: `> playground_` pixel label + "explore" in HamIsCute
+- three notebook cards in a row (stagger entrance animation), one per playground section
+- each notebook: spiral rings at top, pink margin line, ruled lines, individual rotation (`--rotate` css var)
+- each card has: pixel label, title as `<Link>` (accent-colored underline on hover), blurb, small preview sketch
+  - media: rating bars (pink, varying widths)
+  - travel: SVG squiggle path with colored location dots
+  - creative: 3×2 pastel color grid
+- clicking a title navigates to its sub-route (no full-card click)
 
-### playground (app/playground/ + app/components/playground/)
-- full standalone page
-- three tabbed sections:
-  1. media ratings — letterboxd-style card grid, click through to detail pages
-  2. travel — interactive map (react-leaflet), click location → photo gallery
-  3. creative — masonry grid for nail art, painting, baking photos
+### playground (app/playground/) — IN PROGRESS, pick up here next
+- route structure:
+  - `app/playground/page.tsx` — hub page, centered heading only (stub, needs content)
+  - `app/playground/media/page.tsx` — **START HERE**: letterboxd-style card grid, click through to detail pages
+  - `app/playground/travel/page.tsx` — stub: interactive map (react-leaflet), click location → photo gallery
+  - `app/playground/creative/page.tsx` — stub: masonry grid for nail art, painting, baking photos
+- all sub-pages currently render a centered HamIsCute heading in soft-yellow, nothing else
+- shared background: `--color-soft-yellow` across all playground pages
 
 ### resume (app/resume/)
 - clean full-page resume layout
 - printable / pdf-friendly
+- not yet built

@@ -1,0 +1,32 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-soft-yellow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5rem 2rem;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pixelLabel {
+  font-family: 'PokemonClassic';
+  font-size: 0.6rem;
+  color: var(--color-golden-orange);
+  letter-spacing: 0.05em;
+}
+
+.title {
+  font-family: 'HamIsCute';
+  font-size: 3.5rem;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin: 0;
+}
